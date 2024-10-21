@@ -3,28 +3,24 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 export function displayImages(images) {
   const gallery = document.getElementById('image-gallery');
-  gallery.innerHTML = ''; // Очищення попередніх зображень
 
-  images.forEach(image => {
-    const imgElement = document.createElement('a');
-    imgElement.href = image.largeImageURL; // Для SimpleLightbox
-    imgElement.classList.add('gallery-item');
+  // Використання map() для генерації HTML для всіх нових зображень
+  const newImagesHTML = images.map(image => `
+      <a href="${image.largeImageURL}" class="gallery-item">
+        <img src="${image.webformatURL}" alt="${image.tags}">
+        <div class="image-info">
+          <p><strong>Downloads:</strong> ${image.downloads}</p>
+          <p><strong>Likes:</strong> ${image.likes}</p>
+          <p><strong>Views:</strong> ${image.views}</p>
+        </div>
+      </a>
+    `).join(''); // Об'єднуємо всі результати в один рядок HTML
 
-    imgElement.innerHTML = `
-      <img src="${image.webformatURL}" alt="${image.tags}">
-      <div class="image-info">
-        <p><strong>Downloads:</strong> ${image.downloads}</p>
-        <p><strong>Likes:</strong> ${image.likes}</p>
-        <p><strong>Views:</strong> ${image.views}</p>
-        
-      </div>
-    `;
-
-    gallery.appendChild(imgElement); // Додаємо новий елемент у галерею
-  });
+  // Вставляємо всю розмітку за один раз у галерею, додаючи до вже існуючих зображень
+  gallery.insertAdjacentHTML('beforeend', newImagesHTML);
 }
 
 export function clearGallery() {
   const gallery = document.getElementById('image-gallery');
-  gallery.innerHTML = ''; // Очищення вмісту галереї ..
+  gallery.innerHTML = ''; // Очищення вмісту галереї
 }
